@@ -83,7 +83,14 @@
     musicInfo.put("lyricist", "아이유");
     musicList.add(musicInfo);
     
-    int targetId = Integer.parseInt(request.getParameter("id"));
+    String idString = request.getParameter("id");
+    
+    int targetId = 0;
+	if(idString != null) {
+		targetId = Integer.parseInt(idString);
+	}
+    
+    String title = request.getParameter("title");
 %>
 
 	<div id="wrap">
@@ -92,12 +99,14 @@
 				<h1 class="text-success">Melong</h1>
 			</div>
 			<div class="search d-flex align-items-center">
-				<div class="input-group col-5">
-				  <input type="text" class="form-control">
-				  <div class="input-group-append">
-				    <button class="btn btn-success" type="button">검색</button>
-				  </div>
-				</div>
+				<form method="get" action="/jsp/test/melong/detail.jsp" class="col-5">
+					<div class="input-group">
+					  <input type="text" class="form-control" name="title">
+					  <div class="input-group-append">
+					    <button class="btn btn-success" type="submit">검색</button>
+					  </div>
+					</div>
+				</form>
 				
 			</div>
 		</header>
@@ -115,7 +124,10 @@
 			
 			<% for(Map<String, Object> music:musicList) { 
 				int id = (Integer)music.get("id");
-				if(targetId == id) {
+				
+				// id가 전달되면 id가 일치하는 경우  
+				// title이 전달이 되면 title이 일치하는 경우 
+				if((targetId != 0 && id == targetId) || (title != null && title.equals(music.get("title")))) {
 			%>
 			
 			<div class="artist d-flex  border border-success p-3">
